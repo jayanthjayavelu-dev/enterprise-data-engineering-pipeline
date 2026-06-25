@@ -27,7 +27,6 @@ def main():
         write_silver_products(silver_products_df)
 
     except Exception:
-
         logger.exception("Products pipeline failed")
         raise
 

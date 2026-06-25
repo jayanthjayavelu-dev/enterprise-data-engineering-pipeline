@@ -1,6 +1,6 @@
 import logging
 
-from pyspark.sql.functions import col, explode, current_timestamp
+from pyspark.sql.functions import col
 
 logger = logging.getLogger(__name__)
 
@@ -14,23 +14,19 @@ def clean_carts(df):
 
 
 def data_quality_check(df):
-    duplicate_count = (df
-                       .groupBy("cart_items_id")
-                       .count()
-                       .filter("count > 1")
-                       .count()
-                       )
+    duplicate_count = df.groupBy("cart_items_id").count().filter("count > 1").count()
 
     if duplicate_count > 0:
         logger.error(f"Found {duplicate_count} duplicate Cart item IDs")
         raise ValueError(f"Found {duplicate_count} duplicate Cart item IDs")
 
-    logger.info(f"Duplicate ID count: {duplicate_count}", )
+    logger.info(
+        f"Duplicate ID count: {duplicate_count}",
+    )
 
-    required_columns = ["user_id", "cart_id", "product_id", "title"]
+    required_columns = ["carts_id", "carts_user_id", "cart_items_product_id", "cart_items_title"]
 
     for col_name in required_columns:
-
         null_count = df.filter(col(col_name).isNull()).count()
 
         if null_count > 0:

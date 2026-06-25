@@ -10,4 +10,3 @@ def load_properties(path):
                 key, value = line.split("=")
                 props[key] = value
     return props
-

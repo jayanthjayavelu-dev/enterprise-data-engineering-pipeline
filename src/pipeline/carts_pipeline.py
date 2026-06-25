@@ -31,7 +31,6 @@ def main():
         silver_carts_df.show(5, truncate=False)
 
     except Exception:
-
         logger.exception("Products pipeline failed")
         raise
     finally:

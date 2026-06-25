@@ -9,7 +9,6 @@ def clean_products(df):
     exploded_df = df.withColumn("products", explode("products"))
 
     flattened_df = exploded_df.selectExpr(
-
         "products.id AS product_id",
         "products.title AS products_title",
         "products.description AS products_description",
@@ -38,8 +37,8 @@ def clean_products(df):
         "products.thumbnail AS products_thumbnail",
         "total",
         "skip",
-        "limit"
-    ).withColumn("processed_timestamp",current_timestamp())
+        "limit",
+    ).withColumn("processed_timestamp", current_timestamp())
 
     data_quality_check(flattened_df)
 
@@ -49,23 +48,19 @@ def clean_products(df):
 
 
 def data_quality_check(df):
-    duplicate_count = (df
-                       .groupBy("product_id")
-                       .count()
-                       .filter("count > 1")
-                       .count()
-                       )
+    duplicate_count = df.groupBy("product_id").count().filter("count > 1").count()
 
     if duplicate_count > 0:
         logger.error(f"Found {duplicate_count} duplicate product IDs")
         raise ValueError(f"Found {duplicate_count} duplicate product IDs")
 
-    logger.info(f"Duplicate ID count: {duplicate_count}", )
+    logger.info(
+        f"Duplicate ID count: {duplicate_count}",
+    )
 
-    required_columns = ["product_id", "products_title","products_price"]
+    required_columns = ["product_id", "products_title", "products_price"]
 
     for col_name in required_columns:
-
         null_count = df.filter(col(col_name).isNull()).count()
 
         if null_count > 0:

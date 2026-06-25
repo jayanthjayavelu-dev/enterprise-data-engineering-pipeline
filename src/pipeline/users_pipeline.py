@@ -30,9 +30,7 @@ def main():
         silver_user_df.printSchema()
         silver_user_df.show(5, truncate=False)
 
-
     except Exception:
-
         logger.exception("Users pipeline failed")
         raise
 

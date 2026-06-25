@@ -23,12 +23,10 @@ def main():
         load_gold_to_minio(gold_customer_analytics_df)
 
     except Exception:
-
         logger.exception("Users pipeline failed")
         raise
 
     finally:
-
         logger.info("Successfully Completed Customer Analytics Data pipeline")
 
         if spark:

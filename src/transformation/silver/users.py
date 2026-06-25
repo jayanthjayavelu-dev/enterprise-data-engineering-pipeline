@@ -1,16 +1,14 @@
 import logging
 
-from pyspark.sql.functions import col, trim, expr, explode, current_timestamp
+from pyspark.sql.functions import col, trim, explode, current_timestamp
 
 logger = logging.getLogger(__name__)
 
 
 def clean_users(df):
-
     explode_df = df.withColumn("users", explode("users"))
 
-    flatten_df = (explode_df
-    .selectExpr(
+    flatten_df = explode_df.selectExpr(
         "users.id",
         "users.firstName",
         "users.lastName",
@@ -66,16 +64,13 @@ def clean_users(df):
         "total",
         "skip",
         "limit",
-    ).withColumn("processed_timestamp",current_timestamp())
-    )
-
+    ).withColumn("processed_timestamp", current_timestamp())
 
     cleansed_df = (
-                flatten_df
-                   .withColumn("firstName", trim("firstName"))
-                   .withColumn("lastName",  trim("lastName"))
-                   .withColumn("maidenName",trim("maidenName"))
-                   )
+        flatten_df.withColumn("firstName", trim("firstName"))
+        .withColumn("lastName", trim("lastName"))
+        .withColumn("maidenName", trim("maidenName"))
+    )
 
     data_quality_check(cleansed_df)
 
@@ -85,23 +80,19 @@ def clean_users(df):
 
 
 def data_quality_check(df):
-    duplicate_count = (df
-                       .groupBy("id")
-                       .count()
-                       .filter("count > 1")
-                       .count()
-                       )
+    duplicate_count = df.groupBy("id").count().filter("count > 1").count()
 
     if duplicate_count > 0:
         logger.error(f"Found {duplicate_count} duplicate IDs")
         raise ValueError(f"Found {duplicate_count} duplicate IDs")
 
-    logger.info(f"Duplicate ID count: {duplicate_count}", )
+    logger.info(
+        f"Duplicate ID count: {duplicate_count}",
+    )
 
     required_columns = ["id", "firstName", "email"]
 
     for col_name in required_columns:
-
         null_count = df.filter(col(col_name).isNull()).count()
 
         if null_count > 0:

@@ -1,17 +1,12 @@
 import pytest
 from pyspark.sql import SparkSession
 
-from transformation import clean_todos
+from src.transformation.silver.carts import clean_carts
 
 
 @pytest.fixture(scope="session")
 def spark_obj():
-    spark = (
-        SparkSession.builder
-        .master("local[*]")
-        .appName("pytest")
-        .getOrCreate()
-    )
+    spark = SparkSession.builder.master("local[*]").appName("pytest").getOrCreate()
 
     yield spark
 
@@ -21,18 +16,50 @@ def spark_obj():
 def test_completed_task(spark_obj):
     spark = spark_obj
 
+    from decimal import Decimal
+
     data = [
-        (1, 1, "delectus aut autem", False),
-        (1, 2, "quis ut nam facilis et officia qui", False),
-        (1, 3, "fugiat veniam minus", False),
-        (1, 4, "et porro tempora", True),
-        (1, 5, "laboriosam mollitia et enim quasi adipisci quia provident illum", False),
+        (
+            1,  # carts_id
+            15,  # carts_user_id
+            Decimal("5499.00"),  # carts_total
+            Decimal("4999.00"),  # carts_discounted_total
+            2,  # carts_total_products
+            3,  # carts_total_quantity
+            101,  # cart_items_id
+            1,  # cart_items_cart_id
+            5,  # cart_items_product_id
+            "iPhone Charger",  # cart_items_title
+            Decimal("999.00"),  # cart_items_price
+            2,  # cart_items_quantity
+            Decimal("1998.00"),  # cart_items_total
+            Decimal("10.00"),  # cart_items_discount_percentage
+            Decimal("1798.20"),  # cart_items_discounted_total
+            "https://example.com/charger.jpg",  # cart_items_thumbnail
+        )
     ]
 
-    columns = ["userId", "id", "title", "completed"]
+    columns = [
+        "carts_id",
+        "carts_user_id",
+        "carts_total",
+        "carts_discounted_total",
+        "carts_total_products",
+        "carts_total_quantity",
+        "cart_items_id",
+        "cart_items_cart_id",
+        "cart_items_product_id",
+        "cart_items_title",
+        "cart_items_price",
+        "cart_items_quantity",
+        "cart_items_total",
+        "cart_items_discount_percentage",
+        "cart_items_discounted_total",
+        "cart_items_thumbnail",
+    ]
 
     df = spark.createDataFrame(data, columns)
 
-    result_df = clean_todos(df)
+    result_df = clean_carts(df)
 
     assert result_df.count() == 1

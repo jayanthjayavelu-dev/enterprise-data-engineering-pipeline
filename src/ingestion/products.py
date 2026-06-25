@@ -8,14 +8,11 @@ logger = logging.getLogger(__name__)
 def load_products(spark_session):
     logger.info("Reading MongoDB data from Product Collection")
 
-    df = (spark_session
-          .read
-          .format("mongodb")
-          .load()
-          .withColumn("ingestion_timestamp",
-                      current_timestamp()
-                      )
-          )
+    df = (
+        spark_session.read.format("mongodb")
+        .load()
+        .withColumn("ingestion_timestamp", current_timestamp())
+    )
 
     logger.info("Product Dataframe is created")
 
