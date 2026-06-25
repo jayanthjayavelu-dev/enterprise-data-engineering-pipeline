@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "enterprise-data-engineering-pipeline"
+version = "0.1.0"
+description = "Production Data Engineering Pipeline using PySpark"
+requires-python = ">=3.10"
+
+authors = [
+    {name = "Jayanth Jayavelu"}
+]
+
+dependencies = [
+	"pyspark==3.5.7",
+	"requests>=2.32.0",
+	"pymongo>=4.10.0",
+	"minio>=7.2.0"
+	]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.12.0",
+    "pytest>=8.4.0",
+    "pytest-cov>=6.2.0",
+    "bandit>=1.8.0",
+    "mypy>=1.16.0",
+    "pre-commit>=4.2.0"
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.coverage.run]
+source = ["src"]
+
+
+[tool.mypy]
+ignore_missing_imports = true
