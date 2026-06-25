@@ -1,6 +1,8 @@
 import logging
 
 from pyspark.sql import functions as F
+from pyspark.sql.functions import broadcast
+
 from src.common.constant import (
     MINIO_SILVER_USERS_PATH,
     MINIO_SILVER_PRODUCTS_PATH,
@@ -23,7 +25,7 @@ def build_customer_analytics(spark):
         carts_df.alias("c")
         .join(users_df.alias("u"), F.col("c.carts_user_id") == F.col("u.id"), "left")
         .join(
-            products_df.alias("p"),
+            broadcast(products_df).alias("p"),
             F.col("c.cart_items_product_id") == F.col("p.product_id"),
             "left",
         )
@@ -77,6 +79,10 @@ def build_customer_analytics(spark):
             F.col("a.carts_user_id") == F.col("s.carts_user_id"),
             "left",
         )
+        .drop(
+            users_df["processing_date"], products_df["processing_date"], carts_df["processing_date"]
+        )
+        .withColumn("processing_date", F.current_date())
         .select(
             F.col("a.carts_user_id").alias("customer_id"),
             F.col("firstName"),
@@ -103,10 +109,11 @@ def build_customer_analytics(spark):
             F.col("customer_total_orders"),
             F.col("customer_total_quantity"),
             F.col("customer_segment"),
-            F.current_timestamp().alias("processed_timestamp"),
+            F.col("processing_date"),
         )
     )
 
+    gold_df.cache()
     # Validation
 
     record_count = gold_df.count()
@@ -115,6 +122,9 @@ def build_customer_analytics(spark):
         raise ValueError("Gold dataset contains no records")
 
     logger.info(f"Gold dataset record count: {record_count}")
+
     logger.info("Customer Analytics Dataframe - Created, Transformed and Validated")
+
+    gold_df.unpersist()
 
     return gold_df

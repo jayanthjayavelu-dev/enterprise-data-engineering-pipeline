@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 def load_gold_to_minio(df):
-    (df.write.mode("overwrite").parquet(MINIO_GOLD_PATH))
+    (df.write.mode("overwrite").partitionBy("processing_date").parquet(MINIO_GOLD_PATH))
 
     logger.info("Customer Analytics data wrote to minIO")
 

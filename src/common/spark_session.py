@@ -5,13 +5,14 @@ from src.common.constant import (
     MINIO_ACCESS_KEY,
     MINIO_SECRET_KEY,
     MONGO_READ_CONNECTION_URI,
+    SPARK_MASTER,
 )
 
 
 def get_spark_session():
     spark = (
         SparkSession.builder.appName("MinIOTest")
-        .master("local[*]")
+        .master(SPARK_MASTER)
         # AWS CONFIG
         .config("spark.hadoop.fs.s3a.endpoint", MINIO_ENDPOINT)
         .config("spark.hadoop.fs.s3a.access.key", MINIO_ACCESS_KEY)
@@ -21,11 +22,10 @@ def get_spark_session():
         .config("spark.hadoop.fs.s3a.fast.upload", "true")
         .config("spark.hadoop.fs.s3a.fast.upload.buffer", "bytebuffer")
         .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
-        # MONGO READ CONFIG
-        .config("spark.jars.packages", "org.mongodb.spark:mongo-spark-connector_2.12:10.3.0")
-        .config("spark.mongodb.read.connection.uri", MONGO_READ_CONNECTION_URI)
         # SPARK PACKAGES
         .config("spark.jars.packages", SPARK_PACKAGES)
+        # MONGO READ CONFIG
+        .config("spark.mongodb.read.connection.uri", MONGO_READ_CONNECTION_URI)
         .getOrCreate()
     )
 

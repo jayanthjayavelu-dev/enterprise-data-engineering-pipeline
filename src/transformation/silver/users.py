@@ -1,6 +1,6 @@
 import logging
 
-from pyspark.sql.functions import col, trim, explode, current_timestamp
+from pyspark.sql.functions import col, trim, explode, current_date
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +64,7 @@ def clean_users(df):
         "total",
         "skip",
         "limit",
-    ).withColumn("processed_timestamp", current_timestamp())
+    ).withColumn("processing_date", current_date())
 
     cleansed_df = (
         flatten_df.withColumn("firstName", trim("firstName"))

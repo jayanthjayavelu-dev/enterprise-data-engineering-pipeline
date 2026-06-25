@@ -27,9 +27,6 @@ def main():
 
         write_silver_users(silver_user_df)
 
-        silver_user_df.printSchema()
-        silver_user_df.show(5, truncate=False)
-
     except Exception:
         logger.exception("Users pipeline failed")
         raise

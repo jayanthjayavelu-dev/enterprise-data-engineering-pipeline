@@ -1,6 +1,6 @@
 import logging
 
-from pyspark.sql.functions import col, explode, current_timestamp
+from pyspark.sql.functions import col, explode, current_date
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +38,7 @@ def clean_products(df):
         "total",
         "skip",
         "limit",
-    ).withColumn("processed_timestamp", current_timestamp())
+    ).withColumn("processing_date", current_date())
 
     data_quality_check(flattened_df)
 

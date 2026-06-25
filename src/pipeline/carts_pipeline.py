@@ -27,9 +27,6 @@ def main():
 
         write_silver_carts(silver_carts_df)
 
-        silver_carts_df.printSchema()
-        silver_carts_df.show(5, truncate=False)
-
     except Exception:
         logger.exception("Products pipeline failed")
         raise

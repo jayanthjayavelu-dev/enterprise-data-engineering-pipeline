@@ -1,16 +1,18 @@
 import logging
 
-from pyspark.sql.functions import col
+from pyspark.sql.functions import col, current_date
 
 logger = logging.getLogger(__name__)
 
 
 def clean_carts(df):
-    data_quality_check(df)
+    cleansed_df = df.withColumn("processing_date", current_date())
+
+    data_quality_check(cleansed_df)
 
     logger.info("Carts DataFrame validated")
 
-    return df
+    return cleansed_df
 
 
 def data_quality_check(df):

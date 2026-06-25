@@ -1,4 +1,4 @@
-from pyspark.sql.functions import col, current_timestamp
+from pyspark.sql.functions import col
 
 from src.common.constant import POSTGRES_URL, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DRIVER
 
@@ -40,6 +40,6 @@ def load_carts(spark_session, tables):
             "i.discounted_total AS cart_items_discounted_total",
             "i.thumbnail AS cart_items_thumbnail",
         )
-    ).withColumn("processed_timestamp", current_timestamp())
+    )
 
     return join_carts_df
