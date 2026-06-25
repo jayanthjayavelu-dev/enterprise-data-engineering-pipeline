@@ -31,6 +31,8 @@ The workflow is orchestrated using Apache Airflow running in Docker, enabling au
 * Parquet
 ## Project Structure
 
+
+```text
 enterprise-customer-analytics-platform/
 │
 ├── dags/
@@ -46,13 +48,13 @@ enterprise-customer-analytics-platform/
 ├── tests/
 ├── docs/
 │   ├── architecture/
+│   │   └── enterprise_customer_analytics_platform.png
 │   └── screenshots/
 │
 ├── requirements.txt
 ├── .gitignore
 └── README.md
-
-## Test Artifacts
+```
 
 The platform was validated through successful execution of all ingestion, transformation, and analytics workflows.
 
@@ -69,4 +71,19 @@ Validation included:
 
 ## Screenshots
 
+## Screenshots
+
 ### Airflow DAG Execution
+![Airflow DAG](docs/screenshots/airflow_dag.png)
+
+### Bronze Layer Datasets
+![Bronze Layer](docs/screenshots/bronze_layer.png)
+
+### Silver Layer Datasets
+![Silver Layer](docs/screenshots/silver_layer.png)
+
+### Gold Layer Dataset
+![Gold Layer](docs/screenshots/gold_layer.png)
+
+### PostgreSQL Analytics Mart
+![Postgres Analytics](docs/screenshots/postgres_customer_analytics.png)
