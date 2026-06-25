@@ -6,6 +6,11 @@ The platform processes multi-source datasets through distributed Spark pipelines
 
 The workflow is orchestrated using Apache Airflow running in Docker, enabling automated execution of ingestion, transformation, and analytics pipelines with dependency management and monitoring.
 
+## Architecture Diagram
+
+![Architecture Diagram](docs/architecture/enterprise_customer_analytics_platform.png)
+
+
 ## Key Features
 
 * Multi-source data ingestion from REST APIs, MongoDB, and PostgresSQL
@@ -71,16 +76,18 @@ Validation included:
 
 ## Screenshots
 
-## Screenshots
-
 ### Airflow DAG Execution
 ![Airflow DAG](docs/screenshots/airflow_dag.png)
 
 ### Bronze Layer Datasets
-![Bronze Layer](docs/screenshots/bronze_layer.png)
+![Bronze Layer](docs/screenshots/bronze_layer_users.png)
+![Bronze Layer](docs/screenshots/bronze_layer_products.png)
+![Bronze Layer](docs/screenshots/bronze_layer_carts.png)
 
 ### Silver Layer Datasets
-![Silver Layer](docs/screenshots/silver_layer.png)
+![Silver Layer](docs/screenshots/silver_layer_users.png)
+![Silver Layer](docs/screenshots/silver_layer_products.png)
+![Silver Layer](docs/screenshots/silver_layer_carts.png)
 
 ### Gold Layer Dataset
 ![Gold Layer](docs/screenshots/gold_layer.png)
