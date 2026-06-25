@@ -13,13 +13,13 @@ The workflow is orchestrated using Apache Airflow running in Docker, enabling au
 
 ## Key Features
 
-* Multi-source data ingestion from REST APIs, MongoDB, and PostgresSQL
+* Multi-source data ingestion from REST APIs, MongoDB, and PostgreSQL
 * Apache Spark-based distributed ETL processing
 * Bronze-Silver-Gold Medallion Architecture
 * Data quality validation, cleansing, and schema standardization
 * Customer Analytics Gold Layer generation
 * MinIO Data Lake for raw, processed, and curated datasets
-* PostgresSQL Analytics Mart for reporting consumption
+* PostgreSQL  Analytics Mart for reporting consumption
 * Apache Airflow workflow orchestration
 * Dockerized orchestration environment
 * Modular and production-inspired project structure
@@ -34,13 +34,14 @@ The workflow is orchestrated using Apache Airflow running in Docker, enabling au
 * Docker
 * REST APIs
 * Parquet
+* PostgreSQL
+
 ## Project Structure
 
 
 ```text
 enterprise-customer-analytics-platform/
 │
-├── dags/
 ├── config/
 ├── src/
 │   ├── ingestion/
@@ -69,7 +70,7 @@ Validation included:
 - Bronze Layer dataset generation
 - Silver Layer dataset generation
 - Gold Layer dataset generation
-- PostgresSQL Analytics Mart population
+- PostgreSQL Analytics Mart population
 - Multiple scheduled and manual DAG executions
 - Data quality validation checks
 
